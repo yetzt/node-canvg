@@ -5,11 +5,6 @@ var RGBColor = require("rgbcolor");
 var window={};
 window.DOMParser=DOMParser;
 
-var document= {}
-document.createElement = function(){
-	return new Canvas();
-};
-
 /*
  * canvg.js - Javascript SVG parser and renderer on Canvas
  * MIT Licensed 
@@ -40,7 +35,7 @@ document.createElement = function(){
 			var svgTags = document.getElementsByTagName('svg');
 			for (var i=0; i<svgTags.length; i++) {
 				var svgTag = svgTags[i];
-				var c = document.createElement('canvas');
+				var c = new Canvas();
 				c.width = svgTag.clientWidth;
 				c.height = svgTag.clientHeight;
 				svgTag.parentNode.insertBefore(c, svgTag);
@@ -1455,7 +1450,7 @@ document.createElement = function(){
 				tempSvg.attributes['height'] = new svg.Property('height', this.attribute('height').value);
 				tempSvg.children = this.children;
 				
-				var c = document.createElement('canvas');
+				var c = new Canvas();
 				document.body.appendChild(c);
 				c.width = this.attribute('width').toPixels('x') + this.attribute('x').toPixels('x');
 				c.height = this.attribute('height').toPixels('y')  + this.attribute('y').toPixels('y');
@@ -1558,7 +1553,7 @@ document.createElement = function(){
 					tempSvg.attributes['height'] = new svg.Property('height', rootView.height);
 					tempSvg.children = [ group ];
 					
-					var c = document.createElement('canvas');
+					var c = new Canvas();
 					c.width = rootView.width;
 					c.height = rootView.height;
 					var tempCtx = c.getContext('2d');
@@ -2297,13 +2292,13 @@ document.createElement = function(){
 				var mask = element.attribute('mask').value;
 				element.attribute('mask').value = '';
 				
-					var cMask = document.createElement('canvas');
+					var cMask = new Canvas();
 					cMask.width = x + width;
 					cMask.height = y + height;
 					var maskCtx = cMask.getContext('2d');
 					this.renderChildren(maskCtx);
 				
-					var c = document.createElement('canvas');
+					var c = new Canvas();
 					c.width = x + width;
 					c.height = y + height;
 					var tempCtx = c.getContext('2d');
@@ -2375,7 +2370,7 @@ document.createElement = function(){
 				var px = extraPercent * width;
 				var py = extraPercent * height;
 				
-				var c = document.createElement('canvas');
+				var c = new Canvas();
 				c.width = width + 2*px;
 				c.height = height + 2*py;
 				var tempCtx = c.getContext('2d');
