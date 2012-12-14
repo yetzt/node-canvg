@@ -1,6 +1,7 @@
 var Canvas = require("canvas");
 var xmldom = require('xmldom');
 var RGBColor = require("rgbcolor");
+var http = require("http");
 
 /*
  * canvg.js - Javascript SVG parser and renderer on Canvas
@@ -81,10 +82,18 @@ var RGBColor = require("rgbcolor");
 		// compress spaces
 		svg.compressSpaces = function(s) { return s.replace(/[\s\r\t\n]+/gm,' '); }
 		
+		
 		// ajax
-		svg.ajax = function(url) {
-			// FIXME
-			return null;
+		svg.ajax = function(url, ajax_callback) {
+			http.get(url, function(res){
+				var data = '';
+				res.on('data', function (chunk) { 
+					data += chunk;
+				});
+				res.on('end', function () {
+					ajax_callback(data);
+				});
+			});
 		} 
 		
 		// parse xml
@@ -2158,12 +2167,14 @@ var RGBColor = require("rgbcolor");
 										var urlStart = srcs[s].indexOf('url');
 										var urlEnd = srcs[s].indexOf(')', urlStart);
 										var url = srcs[s].substr(urlStart + 5, urlEnd - urlStart - 6);
-										var doc = svg.parseXml(svg.ajax(url));
+										svg.ajax(url, function(data){
+											var doc = svg.parseXml(data);											
 										var fonts = doc.getElementsByTagName('font');
 										for (var f=0; f<fonts.length; f++) {
 											var font = svg.CreateElement(fonts[f]);
 											svg.Definitions[fontFamily] = font;
 										}
+										});
 									}
 								}
 							}
