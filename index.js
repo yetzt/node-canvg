@@ -13,7 +13,7 @@ var RGBColor = require("rgbcolor");
 (function(){
 	// canvg(target, s)
 	// target: canvas element or the id of a canvas element
-	// s: svg string, url to svg file, or xml document
+	// s: svg string
 	// opts: optional hash of options
 	//		 ignoreDimensions: true => does not try to resize canvas
 	//		 ignoreClear: true => does not clear canvas
