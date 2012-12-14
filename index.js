@@ -81,7 +81,7 @@ var http = require("http");
 		
 		// compress spaces
 		svg.compressSpaces = function(s) { return s.replace(/[\s\r\t\n]+/gm,' '); }
-		
+
 		
 		// ajax
 		svg.ajax = function(url, ajax_callback) {
@@ -95,7 +95,7 @@ var http = require("http");
 				});
 			});
 		} 
-		
+
 		// remote
 		svg.remote = function(url, remote_callback) {
 			http.get(url, function(res){
@@ -2080,7 +2080,7 @@ var http = require("http");
 					});
 				} else {
 					/* fix me */
-			}
+				}
 			}
 			
 			this.renderChildren = function(ctx) {
@@ -2196,11 +2196,11 @@ var http = require("http");
 										var url = srcs[s].substr(urlStart + 5, urlEnd - urlStart - 6);
 										svg.ajax(url, function(data){
 											var doc = svg.parseXml(data);											
-										var fonts = doc.getElementsByTagName('font');
-										for (var f=0; f<fonts.length; f++) {
-											var font = svg.CreateElement(fonts[f]);
-											svg.Definitions[fontFamily] = font;
-										}
+											var fonts = doc.getElementsByTagName('font');
+											for (var f=0; f<fonts.length; f++) {
+												var font = svg.CreateElement(fonts[f]);
+												svg.Definitions[fontFamily] = font;
+											}
 										});
 									}
 								}
@@ -2603,8 +2603,6 @@ var http = require("http");
 			}
 			
 			this.runEvents = function() {
-				svg.ctx.canvas.style.cursor = '';
-				
 				for (var i=0; i<this.events.length; i++) {
 					var e = this.events[i];
 					var element = this.eventElements[i];
