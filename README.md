@@ -1,6 +1,6 @@
-# node-canvf
+# node-canvg
 
-A nodejs port of canvg
+A port of canvg, which pareses svg input and renders the result to a canvas.
 http://code.google.com/p/canvg/
 
 ## Usage
