@@ -32,7 +32,8 @@ var RGBColor = require("rgbcolor");
 		target.svg = svg = build();
 		svg.opts = opts;
 		var ctx = target.getContext('2d');
-		svg.loadXml(ctx, s);
+		svg.loadXmlDoc(ctx, svg.parseXml(s));
+		
 	}
 
 	function build() {
@@ -2430,16 +2431,6 @@ var RGBColor = require("rgbcolor");
 
 			e.type = node.nodeName;
 			return e;
-		}
-				
-		// load from url
-		svg.load = function(ctx, url) {
-			svg.loadXml(ctx, svg.ajax(url));
-		}
-		
-		// load from xml
-		svg.loadXml = function(ctx, xml) {
-			svg.loadXmlDoc(ctx, svg.parseXml(xml));
 		}
 		
 		svg.loadXmlDoc = function(ctx, dom) {
