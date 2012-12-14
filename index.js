@@ -12,7 +12,6 @@ var RGBColor = require("rgbcolor");
  */
 (function(){
 	// canvg(target, s)
-	// empty parameters: replace all 'svg' elements on page with 'canvas' elements
 	// target: canvas element or the id of a canvas element
 	// s: svg string, url to svg file, or xml document
 	// opts: optional hash of options
@@ -29,33 +28,15 @@ var RGBColor = require("rgbcolor");
 			return;
 		}	
 		opts = opts || {};
-	
-		if (typeof target == 'string') {
-			target = document.getElementById(target);
-		}
-		
 		// store class on canvas
-		if (target.svg != null) target.svg.stop();
 		target.svg = svg = build();
 		svg.opts = opts;
-		
 		var ctx = target.getContext('2d');
-		if (typeof(s.documentElement) != 'undefined') {
-			// load from xml doc
-			svg.loadXmlDoc(ctx, s);
-		}
-		else if (s.substr(0,1) == '<') {
-			// load from xml string
-			svg.loadXml(ctx, s);
-		}
-		else {
-			// load from url
-			svg.load(ctx, s);
-		}
+		svg.loadXml(ctx, s);
 	}
 
 	function build() {
-		var svg = { };
+		var svg = {};
 		
 		svg.FRAMERATE = 30;
 		svg.MAX_VIRTUAL_PIXELS = 30000;
@@ -108,8 +89,8 @@ var RGBColor = require("rgbcolor");
 		// parse xml
 		svg.parseXml = function(xml) {
 			var parser = new xmldom.DOMParser();
-				return parser.parseFromString(xml, 'text/xml');
-			}
+			return parser.parseFromString(xml, 'text/xml');
+		}
 		
 		svg.Property = function(name, value) {
 			this.name = name;
@@ -2541,7 +2522,7 @@ var RGBColor = require("rgbcolor");
 					waitingForImages = false;
 					needUpdate = true;
 				}
-			
+
 				// need update from redraw?
 				if (typeof(svg.opts['forceRedraw']) == 'function') {
 					if (svg.opts['forceRedraw']() == true) needUpdate = true;
