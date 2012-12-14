@@ -2054,20 +2054,33 @@ var http = require("http");
 			this.base(node);
 			
 			var href = this.attribute('xlink:href').value;
-			var isSvg = href.match(/\.svg$/)
 			
 			svg.Images.push(this);
 			this.loaded = false;
-			if (!isSvg) {
-				this.img = document.createElement('img');
-				var self = this;
-				this.img.onload = function() { self.loaded = true; }
-				this.img.onerror = function() { if (console) console.log('ERROR: image "' + href + '" not found'); self.loaded = true; }
-				this.img.src = href;
-			}
-			else {
-				this.img = svg.ajax(href);
+
+			if (href.substr(0,5) === 'data:') {
+				
+				var match = href.match(/^data:.+;base64,(.*)$/);
+				var buffer = new Buffer(match[1], 'base64');
+
+				this.img = new Canvas.Image;
+				this.img.src = buffer;
 				this.loaded = true;
+				
+			} else {
+				
+				var isSvg = href.match(/\.svg$/)
+				var self = this;
+
+				if (!isSvg) {
+					svg.remote(href,function(data){
+						self.img = new Canvas.Image();
+						self.img.src = data;
+						self.loaded = true;
+					});
+				} else {
+					/* fix me */
+			}
 			}
 			
 			this.renderChildren = function(ctx) {
@@ -2080,9 +2093,8 @@ var http = require("http");
 			
 				ctx.save();
 				if (isSvg) {
-					ctx.drawSvg(this.img, x, y, width, height);
-				}
-				else {
+					/* fix me */
+				} else {
 					ctx.translate(x, y);
 					svg.AspectRatio(ctx,
 									this.attribute('preserveAspectRatio').value,
