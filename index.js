@@ -2553,11 +2553,9 @@ document.createElement = function(){
 					// set canvas size
 					if (e.style('width').hasValue()) {
 						ctx.canvas.width = e.style('width').toPixels('x');
-						ctx.canvas.style.width = ctx.canvas.width + 'px';
 					}
 					if (e.style('height').hasValue()) {
 						ctx.canvas.height = e.style('height').toPixels('y');
-						ctx.canvas.style.height = ctx.canvas.height + 'px';
 					}
 				}
 				var cWidth = ctx.canvas.clientWidth || ctx.canvas.width;
