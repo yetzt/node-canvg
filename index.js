@@ -2032,7 +2032,7 @@ document.createElement = function(){
 			
 			this.text = node.nodeType == 3 ? node.nodeValue : // text
 						node.childNodes.length > 0 ? node.childNodes[0].nodeValue : // element
-						node.text;
+						node.text ? node.text : "";
 			this.getText = function() {
 				return this.text;
 			}
