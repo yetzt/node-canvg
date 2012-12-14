@@ -1,0 +1,19 @@
+{
+	"name": "canvg",
+	"description": "A port of canvg",
+	"version": "0.0.1",
+	"author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
+	"main": "./index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yetzt/node-canvg.git"
+	},
+	"dependencies" : {
+		"canvas": "0.13.x",
+		"xmldom": "0.1.x",
+		"rgbcolor": "0.0.x"
+	},
+	"keywords": ["canvas", "svg"],
+	"license": "MIT",
+	"engines": { "node": ">= 0.8.15" }
+}
