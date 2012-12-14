@@ -1,9 +1,6 @@
 var Canvas = require("canvas");
-var DOMParser = require('xmldom').DOMParser;
+var xmldom = require('xmldom');
 var RGBColor = require("rgbcolor");
-
-var window={};
-window.DOMParser=DOMParser;
 
 /*
  * canvg.js - Javascript SVG parser and renderer on Canvas
@@ -132,20 +129,9 @@ window.DOMParser=DOMParser;
 		
 		// parse xml
 		svg.parseXml = function(xml) {
-			if (window.DOMParser)
-			{
-				var parser = new DOMParser();
+			var parser = new xmldom.DOMParser();
 				return parser.parseFromString(xml, 'text/xml');
 			}
-			else 
-			{
-				xml = xml.replace(/<!DOCTYPE svg[^>]*>/, '');
-				var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
-				xmlDoc.async = 'false';
-				xmlDoc.loadXML(xml); 
-				return xmlDoc;
-			}		
-		}
 		
 		svg.Property = function(name, value) {
 			this.name = name;
