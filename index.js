@@ -96,6 +96,21 @@ var http = require("http");
 			});
 		} 
 		
+		// remote
+		svg.remote = function(url, remote_callback) {
+			http.get(url, function(res){
+				var data = new Buffer(parseInt(res.headers['content-length'],10));
+				var pos = 0;
+				res.on('data', function(chunk) {
+					chunk.copy(data, pos);
+					pos += chunk.length;
+				});
+				res.on('end', function () {
+					remote_callback(data);
+				});
+			});
+		}
+		
 		// parse xml
 		svg.parseXml = function(xml) {
 			var parser = new xmldom.DOMParser();
