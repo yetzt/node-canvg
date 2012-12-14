@@ -1395,7 +1395,6 @@ var RGBColor = require("rgbcolor");
 				tempSvg.children = this.children;
 				
 				var c = new Canvas();
-				document.body.appendChild(c);
 				c.width = this.attribute('width').toPixels('x') + this.attribute('x').toPixels('x');
 				c.height = this.attribute('height').toPixels('y')  + this.attribute('y').toPixels('y');
 				tempSvg.render(c.getContext('2d'));		
