@@ -16,8 +16,6 @@ var RGBColor = require("rgbcolor");
 	// target: canvas element or the id of a canvas element
 	// s: svg string, url to svg file, or xml document
 	// opts: optional hash of options
-	//		 ignoreMouse: true => ignore mouse events
-	//		 ignoreAnimation: true => ignore animations
 	//		 ignoreDimensions: true => does not try to resize canvas
 	//		 ignoreClear: true => does not clear canvas
 	//		 offsetX: int => draws at a x offset
@@ -805,7 +803,6 @@ var RGBColor = require("rgbcolor");
 			
 			this.renderChildren = function(ctx) {
 				this.path(ctx);
-				svg.Mouse.checkPath(this, ctx);
 				if (ctx.fillStyle != '') ctx.fill();
 				if (ctx.strokeStyle != '') ctx.stroke();
 				
@@ -2047,7 +2044,6 @@ var RGBColor = require("rgbcolor");
 					// render as text element
 					this.baseRenderChildren(ctx);
 					var fontSize = new svg.Property('fontSize', svg.Font.Parse(svg.ctx.font).fontSize);
-					svg.Mouse.checkBoundingBox(this, new svg.BoundingBox(this.x, this.y - fontSize.toPixels('y'), this.x + this.measureText(ctx), this.y));					
 				}
 				else {
 					// render as temporary group
@@ -2056,14 +2052,6 @@ var RGBColor = require("rgbcolor");
 					g.parent = this;
 					g.render(ctx);
 				}
-			}
-			
-			this.onclick = function() {
-				window.open(this.attribute('xlink:href').value);
-			}
-			
-			this.onmousemove = function() {
-				svg.ctx.canvas.style.cursor = 'pointer';
 			}
 		}
 		svg.Element.a.prototype = new svg.Element.TextElementBase;		
@@ -2502,18 +2490,6 @@ var RGBColor = require("rgbcolor");
 				return p;
 			}
 			
-			// bind mouse
-			if (svg.opts['ignoreMouse'] != true) {
-				ctx.canvas.onclick = function(e) {
-					var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
-					svg.Mouse.onclick(p.x, p.y);
-				};
-				ctx.canvas.onmousemove = function(e) {
-					var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
-					svg.Mouse.onmousemove(p.x, p.y);
-				};
-			}
-		
 			var e = svg.CreateElement(dom.documentElement);
 			e.root = true;
 					
@@ -2579,18 +2555,6 @@ var RGBColor = require("rgbcolor");
 					needUpdate = true;
 				}
 			
-				// need update from mouse events?
-				if (svg.opts['ignoreMouse'] != true) {
-					needUpdate = needUpdate | svg.Mouse.hasEvents();
-				}
-			
-				// need update from animations?
-				if (svg.opts['ignoreAnimation'] != true) {
-					for (var i=0; i<svg.Animations.length; i++) {
-						needUpdate = needUpdate | svg.Animations[i].update(1000 / svg.FRAMERATE);
-					}
-				}
-				
 				// need update from redraw?
 				if (typeof(svg.opts['forceRedraw']) == 'function') {
 					if (svg.opts['forceRedraw']() == true) needUpdate = true;
