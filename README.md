@@ -5,10 +5,10 @@ http://code.google.com/p/canvg/
 
 ## Usage
 ```` js
-var canvg = require("./lib/canvg");
+var canvg = require("canvg");
 var Canvas = require("canvas");
 
-var canvas = new Canvas(640,480);
+var canvas = new Canvas();
 
 canvg(canvas, '<svg>...</svg>');
 
