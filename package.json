@@ -1,6 +1,6 @@
 {
 	"name": "canvg",
-	"description": "A port of canvg",
+	"description": "A port of canvg, which pareses svg input and renders the result to a canvas.",
 	"version": "0.0.1",
 	"author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
 	"main": "./index.js",
