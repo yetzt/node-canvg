@@ -1,7 +1,7 @@
 {
 	"name": "canvg",
 	"description": "A port of canvg, which pareses svg input and renders the result to a canvas.",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
 	"main": "./index.js",
 	"repository": {
@@ -9,7 +9,7 @@
 		"url": "https://github.com/yetzt/node-canvg.git"
 	},
 	"dependencies" : {
-		"canvas": "0.13.x",
+		"canvas": ">= 1.0.0",
 		"xmldom": "0.1.x",
 		"rgbcolor": "0.0.x"
 	},
