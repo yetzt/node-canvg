@@ -2512,6 +2512,8 @@ var http = require("http");
 				}
 				svg.ViewPort.SetCurrent(cWidth, cHeight);		
 				
+				if (!("ignoreAnimation" in svg.opts)) svg.opts.ignoreAnimation = false;
+				
 				if (svg.opts['offsetX'] != null) e.attribute('x', true).value = svg.opts['offsetX'];
 				if (svg.opts['offsetY'] != null) e.attribute('y', true).value = svg.opts['offsetY'];
 				if (svg.opts['scaleWidth'] != null && svg.opts['scaleHeight'] != null) {
@@ -2535,7 +2537,7 @@ var http = require("http");
 				if (isFirstRender) {
 					isFirstRender = false;
 					if (typeof(svg.opts['renderCallback']) == 'function') svg.opts['renderCallback']();
-				}			
+				}
 			}
 			
 			var waitingForImages = true;
@@ -2558,9 +2560,15 @@ var http = require("http");
 				
 				// render if needed
 				if (needUpdate) {
-					draw();				
+					draw();
 					svg.Mouse.runEvents(); // run and clear our events
 				}
+				
+				// stop after first render, since we just need one.
+				if (svg.opts.ignoreAnimation && !isFirstRender) {
+					svg.stop();
+				}
+
 			}, 1000 / svg.FRAMERATE);
 		}
 		
