@@ -2108,6 +2108,14 @@ var http = require("http");
 				}
 				ctx.restore();
 			}
+
+            this.getBoundingBox = function() {
+                var x = this.attribute('x').toPixels('x');
+                var y = this.attribute('y').toPixels('y');
+                var width = this.attribute('width').toPixels('x');
+                var height = this.attribute('height').toPixels('y');
+                return new svg.BoundingBox(x, y, x + width, y + height);
+            }
 		}
 		svg.Element.image.prototype = new svg.Element.RenderedElementBase;
 		
