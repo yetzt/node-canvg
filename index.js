@@ -2,6 +2,7 @@ var Canvas = require("canvas");
 var xmldom = require('xmldom');
 var RGBColor = require("rgbcolor");
 var http = require("http");
+var stackblur = require("stackblur");
 
 /*
  * canvg.js - Javascript SVG parser and renderer on Canvas
@@ -2380,64 +2381,10 @@ var http = require("http");
 			this.base = svg.Element.ElementBase;
 			this.base(node);	
 			
-			function make_fgauss(sigma) {
-				sigma = Math.max(sigma, 0.01);			      
-				var len = Math.ceil(sigma * 4.0) + 1;                     
-				mask = [];                               
-				for (var i = 0; i < len; i++) {                             
-					mask[i] = Math.exp(-0.5 * (i / sigma) * (i / sigma));                                           
-				}                                                           
-				return mask; 
-			}
-			
-			function normalize(mask) {
-				var sum = 0;
-				for (var i = 1; i < mask.length; i++) {
-					sum += Math.abs(mask[i]);
-				}
-				sum = 2 * sum + Math.abs(mask[0]);
-				for (var i = 0; i < mask.length; i++) {
-					mask[i] /= sum;
-				}
-				return mask;
-			}
-			
-			function convolve_even(src, dst, mask, width, height) {
-			  for (var y = 0; y < height; y++) {
-				for (var x = 0; x < width; x++) {
-				  var a = imGet(src, x, y, width, height, 3)/255;
-				  for (var rgba = 0; rgba < 4; rgba++) {					  
-					  var sum = mask[0] * (a==0?255:imGet(src, x, y, width, height, rgba)) * (a==0||rgba==3?1:a);
-					  for (var i = 1; i < mask.length; i++) {
-						var a1 = imGet(src, Math.max(x-i,0), y, width, height, 3)/255;
-					    var a2 = imGet(src, Math.min(x+i, width-1), y, width, height, 3)/255;
-						sum += mask[i] * 
-						  ((a1==0?255:imGet(src, Math.max(x-i,0), y, width, height, rgba)) * (a1==0||rgba==3?1:a1) + 
-						   (a2==0?255:imGet(src, Math.min(x+i, width-1), y, width, height, rgba)) * (a2==0||rgba==3?1:a2));
-					  }
-					  imSet(dst, y, x, height, width, rgba, sum);
-				  }			  
-				}
-			  }
-			}		
-
-			function imGet(img, x, y, width, height, rgba) {
-				return img[y*width*4 + x*4 + rgba];
-			}
-			
-			function imSet(img, x, y, width, height, rgba, val) {
-				img[y*width*4 + x*4 + rgba] = val;
-			}
-						
 			function blur(ctx, width, height, sigma)
 			{
 				var srcData = ctx.getImageData(0, 0, width, height);
-				var mask = make_fgauss(sigma);
-				mask = normalize(mask);
-				tmp = [];
-				convolve_even(srcData.data, tmp, mask, width, height);
-				convolve_even(tmp, srcData.data, mask, height, width);
-				ctx.clearRect(0, 0, width, height);
+                stackblur.blur(srcData.data, width, height, sigma);
 				ctx.putImageData(srcData, 0, 0);
 			}			
 		
