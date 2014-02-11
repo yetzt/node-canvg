@@ -2381,10 +2381,9 @@ var stackblur = require("stackblur");
 			this.base = svg.Element.ElementBase;
 			this.base(node);	
 			
-			function blur(ctx, width, height, sigma)
-			{
+			function blur(ctx, width, height, sigma) {
 				var srcData = ctx.getImageData(0, 0, width, height);
-                stackblur.blur(srcData.data, width, height, sigma);
+				stackblur.blur(srcData.data, width, height, sigma);
 				ctx.putImageData(srcData, 0, 0);
 			}			
 		

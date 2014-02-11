@@ -1,25 +1,30 @@
 {
-  "name": "canvg",
-  "description": "A port of canvg, which pareses svg input and renders the result to a canvas.",
-  "version": "0.0.4",
-  "author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
-  "main": "./index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yetzt/node-canvg.git"
-  },
-  "dependencies": {
-    "canvas": ">= 1.0.0",
-    "xmldom": "0.1.x",
-    "rgbcolor": "0.0.x",
-    "stackblur": "0.0.x"
-  },
-  "keywords": [
-    "canvas",
-    "svg"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">= 0.8.15"
-  }
+	"name": "canvg",
+	"description": "A port of canvg, which pareses svg input and renders the result to a canvas.",
+	"version": "0.0.5",
+	"author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
+	"contributors": [{
+		"name": "Chetan",
+		"email": "chetandhemrbe@gmail.com",
+		"url": "https://github.com/chetandhembre"
+	}],
+	"main": "./index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yetzt/node-canvg.git"
+	},
+	"dependencies": {
+		"canvas": ">= 1.0.0",
+		"xmldom": "0.1.x",
+		"rgbcolor": "0.0.x",
+		"stackblur": "0.0.x"
+	},
+	"keywords": [
+		"canvas",
+		"svg"
+	],
+	"license": "MIT",
+	"engines": {
+		"node": ">= 0.8.15"
+	}
 }
