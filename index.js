@@ -1,8 +1,10 @@
-var Canvas = require("canvas");
-var xmldom = require('xmldom');
-var RGBColor = require("rgbcolor");
+var fs = require("fs");
 var http = require("http");
+
+var Canvas = require("canvas");
+var RGBColor = require("rgbcolor");
 var stackblur = require("stackblur");
+var xmldom = require('xmldom');
 
 /*
  * canvg.js - Javascript SVG parser and renderer on Canvas
@@ -99,17 +101,24 @@ var stackblur = require("stackblur");
 
 		// remote
 		svg.remote = function(url, remote_callback) {
-			http.get(url, function(res){
-				var data = new Buffer(parseInt(res.headers['content-length'],10));
-				var pos = 0;
-				res.on('data', function(chunk) {
-					chunk.copy(data, pos);
-					pos += chunk.length;
-				});
-				res.on('end', function () {
+			if(url[0] === '.')
+				fs.readFile(url, function(error, data) {
+					if(error) throw error;
+
 					remote_callback(data);
+				})
+			else
+				http.get(url, function(res){
+					var data = new Buffer(parseInt(res.headers['content-length'],10));
+					var pos = 0;
+					res.on('data', function(chunk) {
+						chunk.copy(data, pos);
+						pos += chunk.length;
+					});
+					res.on('end', function () {
+						remote_callback(data);
+					});
 				});
-			});
 		}
 		
 		// parse xml
