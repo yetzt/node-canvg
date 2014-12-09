@@ -104,8 +104,8 @@ var xmldom = require('xmldom');
 		svg.remote = function(url, remote_callback) {
 			var parsed = urlparse(url);
 			var isHttp = (
-				parsed.protocol === 'http' ||
-				parsed.protocol === 'https'
+				parsed.protocol === 'http:' ||
+				parsed.protocol === 'https:'
 			);
 			if(!isHttp) {
 				fs.readFile(url, function(error, data) {
