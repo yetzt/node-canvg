@@ -2077,9 +2077,14 @@ var xmldom = require('xmldom');
 
 			// Render's the image from a buffer
 			var renderBuffer = function(target, buffer) {
+				var setLoaded = function() {
+					target.loaded = true;
+				};
+
 				target.img = new Canvas.Image();
+				target.img.onerror = setLoaded;
+				target.img.onload = setLoaded;
 				target.img.src = buffer;
-				target.loaded = true;
 			}
 
 			// Renders an embedded SVG to a png
