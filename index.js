@@ -2145,20 +2145,16 @@ var xmldom = require('xmldom');
 				if (width == 0 || height == 0) return;
 
 				ctx.save();
-				if (isSvg) {
-					/* fix me */
-				} else {
-					ctx.translate(x, y);
-					svg.AspectRatio(ctx,
-									this.attribute('preserveAspectRatio').value,
-									width,
-									this.img.width,
-									height,
-									this.img.height,
-									0,
-									0);
-					ctx.drawImage(this.img, 0, 0);
-				}
+				ctx.translate(x, y);
+				svg.AspectRatio(ctx,
+								this.attribute('preserveAspectRatio').value,
+								width,
+								this.img.width,
+								height,
+								this.img.height,
+								0,
+								0);
+				ctx.drawImage(this.img, 0, 0);
 				ctx.restore();
 			}
 
