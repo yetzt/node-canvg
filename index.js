@@ -1,5 +1,6 @@
 var fs = require("fs");
 var http = require("http");
+var urlparse = require('url').parse;
 
 var Canvas = require("canvas");
 var RGBColor = require("rgbcolor");
@@ -101,13 +102,18 @@ var xmldom = require('xmldom');
 
 		// remote
 		svg.remote = function(url, remote_callback) {
-			if(url[0] === '.')
+			var parsed = urlparse(url);
+			var isHttp = (
+				parsed.protocol === 'http' ||
+				parsed.protocol === 'https'
+			);
+			if(!isHttp) {
 				fs.readFile(url, function(error, data) {
 					if(error) throw error;
 
 					remote_callback(data);
-				})
-			else
+				});
+			} else {
 				http.get(url, function(res){
 					var data = new Buffer(parseInt(res.headers['content-length'],10));
 					var pos = 0;
@@ -119,6 +125,7 @@ var xmldom = require('xmldom');
 						remote_callback(data);
 					});
 				});
+			}
 		}
 
 		// parse xml
