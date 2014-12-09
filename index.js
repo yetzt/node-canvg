@@ -1,5 +1,6 @@
-var fs = require("fs");
-var http = require("http");
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 var urlparse = require('url').parse;
 
 var Canvas = require("canvas");
@@ -103,18 +104,19 @@ var xmldom = require('xmldom');
 		// remote
 		svg.remote = function(url, remote_callback) {
 			var parsed = urlparse(url);
-			var isHttp = (
-				parsed.protocol === 'http:' ||
-				parsed.protocol === 'https:'
-			);
-			if(!isHttp) {
+			var isHttp = parsed.protocol === 'http:';
+			var isHttps = parsed.protocol === 'https:';
+			var isRemote = isHttp || isHttps;
+
+			if(!isRemote) {
 				fs.readFile(url, function(error, data) {
 					if(error) throw error;
 
 					remote_callback(data);
 				});
 			} else {
-				http.get(url, function(res){
+				var getter = isHttps ? https.get : http.get;
+				getter(url, function(res){
 					var data = new Buffer(parseInt(res.headers['content-length'],10));
 					var pos = 0;
 					res.on('data', function(chunk) {
