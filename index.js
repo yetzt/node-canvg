@@ -38,7 +38,6 @@ var xmldom = require('xmldom');
 		svg.opts = opts;
 		var ctx = target.getContext('2d');
 		svg.loadXmlDoc(ctx, svg.parseXml(s));
-
 	}
 
 	function build() {
@@ -2069,29 +2068,58 @@ var xmldom = require('xmldom');
 			svg.Images.push(this);
 			this.loaded = false;
 
+			// Render's the image from a buffer
+			var renderBuffer = function(target, buffer) {
+				target.img = new Canvas.Image();
+				target.img.src = buffer;
+				target.loaded = true;
+			}
+
+			// Renders an embedded SVG to a png
+			var renderSvg = function(target, buffer) {
+				var str = buffer.toString('utf8');
+				var canvas = new Canvas();
+				canvg(canvas, str, {
+					ignoreDimensions: false,
+					ignoreAnimation: true,
+					renderCallback: function() {
+						renderBuffer(target, canvas.toBuffer());
+					}
+				});
+			};
+
 			if (href.substr(0,5) === 'data:') {
 
-				var match = href.match(/^data:.+;base64,(.*)$/);
-				var buffer = new Buffer(match[1], 'base64');
+				var match = href.match(/^data:(.+);base64,(.*)$/);
+				var type = match[1];
+				var data = match[2];
 
-				this.img = new Canvas.Image;
-				this.img.src = buffer;
-				this.loaded = true;
+				// Check if it's an svg
+				var isSvg = type.indexOf('svg') !== -1;
 
+				// Decode base64 data
+				var buffer = new Buffer(data, 'base64');
+
+				// if png/jpeg, simply draw it
+				if(!isSvg) {
+					renderBuffer(this, buffer);
+					return;
+				}
+
+				// if svg render it
+				renderSvg(this, buffer);
 			} else {
 
 				var isSvg = href.match(/\.svg$/)
 				var self = this;
 
-				if (!isSvg) {
-					svg.remote(href,function(data){
-						self.img = new Canvas.Image();
-						self.img.src = data;
-						self.loaded = true;
-					});
-				} else {
-					/* fix me */
-				}
+				svg.remote(href,function(data) {
+					if(!isSvg) {
+						renderBuffer(self, data);
+					} else {
+						renderSvg(self, data);
+					}
+				});
 			}
 
 			this.renderChildren = function(ctx) {
