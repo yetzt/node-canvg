@@ -2567,7 +2567,7 @@ var xmldom = require('xmldom');
 				}
 
 				// stop after first render, since we just need one.
-				if (svg.opts.ignoreAnimation && !isFirstRender) {
+				if (svg.opts.ignoreAnimation || !isFirstRender) {
 					svg.stop();
 				}
 
