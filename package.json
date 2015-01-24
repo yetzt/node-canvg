@@ -1,7 +1,7 @@
 {
 	"name": "canvg",
 	"description": "A port of canvg, which parses svg input and renders the result to a canvas.",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"author": "Sebastian Vollnhals <sebastian@vollnhals.info>",
 	"contributors": [{
 		"name": "Chetan",
@@ -15,6 +15,9 @@
 		"name": "Aaron O'Mullan",
 		"email": "aaron.omullan@gmail.com",
 		"url": "https://github.com/AaronO"
+	},{
+		"name": "Remko Tronçon",
+		"url": "https://github.com/remko"
 	}],
 	"main": "./index.js",
 	"repository": {
