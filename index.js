@@ -1808,6 +1808,10 @@ var xmldom = require('xmldom');
 					}
 				}
 			}
+
+			this.render = function() {
+				// NO RENDER
+			};
 		}
 		svg.Element.font.prototype = new svg.Element.ElementBase;
 
@@ -2114,14 +2118,13 @@ var xmldom = require('xmldom');
 				// Decode base64 data
 				var buffer = new Buffer(data, 'base64');
 
-				// if png/jpeg, simply draw it
 				if(!isSvg) {
+					// if png/jpeg, simply draw it
 					renderBuffer(this, buffer);
-					return;
+				} else {
+					// if svg render it
+					renderSvg(this, buffer);
 				}
-
-				// if svg render it
-				renderSvg(this, buffer);
 			} else {
 
 				var isSvg = href.match(/\.svg$/)
@@ -2158,13 +2161,13 @@ var xmldom = require('xmldom');
 				ctx.restore();
 			}
 
-            this.getBoundingBox = function() {
-                var x = this.attribute('x').toPixels('x');
-                var y = this.attribute('y').toPixels('y');
-                var width = this.attribute('width').toPixels('x');
-                var height = this.attribute('height').toPixels('y');
-                return new svg.BoundingBox(x, y, x + width, y + height);
-            }
+			this.getBoundingBox = function() {
+				var x = this.attribute('x').toPixels('x');
+				var y = this.attribute('y').toPixels('y');
+				var width = this.attribute('width').toPixels('x');
+				var height = this.attribute('height').toPixels('y');
+				return new svg.BoundingBox(x, y, x + width, y + height);
+			}
 		}
 		svg.Element.image.prototype = new svg.Element.RenderedElementBase;
 
@@ -2409,7 +2412,9 @@ var xmldom = require('xmldom');
 
 				// apply filters
 				for (var i=0; i<this.children.length; i++) {
-					this.children[i].apply(tempCtx, 0, 0, width + 2*px, height + 2*py);
+					if (typeof this.children[i].apply == 'function') {
+						this.children[i].apply(tempCtx, 0, 0, width + 2*px, height + 2*py);
+					}
 				}
 
 				// render on me
